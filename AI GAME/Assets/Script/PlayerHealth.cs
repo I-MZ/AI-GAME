@@ -1,23 +1,26 @@
-//ƒvƒŒƒCƒ„[‚ÌHPˆ—
+ï»¿//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®HPå‡¦ç†
 
 using UnityEngine;
 
 public class PlayerHealth : MonoBehaviour
 {
-    public int maxHealth = 3;   // Å‘åHP
-    private int currentHealth;
+    public int maxHP = 3;
+    private int currentHP;
+
+    public PlayerHPUI hpUI; // HP UI ã¸ã®å‚ç…§
 
     void Start()
     {
-        currentHealth = maxHealth;
+        currentHP = maxHP;
+        hpUI.UpdateHearts(currentHP); // åˆæœŸè¡¨ç¤º
     }
 
-    public void TakeDamage(int damage)
+    public void TakeDamage(int amount)
     {
-        currentHealth -= damage;
-        Debug.Log("Player HP: " + currentHealth);
+        currentHP -= amount;
+        hpUI.UpdateHearts(currentHP);
 
-        if (currentHealth <= 0)
+        if (currentHP <= 0)
         {
             Die();
         }
@@ -26,7 +29,6 @@ public class PlayerHealth : MonoBehaviour
     void Die()
     {
         Debug.Log("Game Over!");
-        // TODO: ƒQ[ƒ€ƒI[ƒo[ˆ—‚ğ‚±‚±‚É’Ç‰Á
-        Destroy(gameObject); // ‚Æ‚è‚ ‚¦‚¸ƒvƒŒƒCƒ„[‚ğÁ‚·
+        Destroy(gameObject); // ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’æ¶ˆã™
     }
 }

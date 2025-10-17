@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class PlayerHPUI : MonoBehaviour
 {
-    public Image[] hearts; //ハートUI（Inspectorで3つ入れる）
+    public Image[] hearts; // ハートUI（♡の代わりに○）
 
-    // HPを設定する（0〜hearts.Length）
+    // 現在HPに応じてUIを更新
     public void UpdateHearts(int currentHP)
     {
         for (int i = 0; i < hearts.Length; i++)
