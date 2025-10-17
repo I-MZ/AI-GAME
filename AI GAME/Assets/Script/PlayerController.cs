@@ -1,0 +1,59 @@
+//プレイヤーの操作のコード
+
+using UnityEngine;
+
+public class PlayerController : MonoBehaviour
+{
+    public float moveSpeed = 2f;   // 自動前進の速さ
+    public float jumpForce = 5f;   // ジャンプの強さ
+
+    private Rigidbody2D rb;
+    private bool isGrounded = false;
+    private int direction = 1;     // 1 = 右向き, -1 = 左向き
+
+    void Start()
+    {
+        rb = GetComponent<Rigidbody2D>();
+    }
+
+    void Update()
+    {
+        // 自動前進
+        rb.velocity = new Vector2(moveSpeed * direction, rb.velocity.y);
+
+        // 向き変更（A=左, D=右）
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            direction = -1;
+            transform.localScale = new Vector3(-1, 1, 1); // 見た目を反転
+        }
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            direction = 1;
+            transform.localScale = new Vector3(1, 1, 1);
+        }
+
+        // ジャンプ（Wキー）
+        if (Input.GetKeyDown(KeyCode.W) && isGrounded)
+        {
+            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+        }
+    }
+
+    // 地面判定
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            isGrounded = false;
+        }
+    }
+}
