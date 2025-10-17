@@ -1,0 +1,40 @@
+画面外に出ないように透明な壁を作る
+
+🛠 実装方法（方法①＋反射あり）
+1. 見えない壁を作る
+
+Hierarchy → Create Empty
+
+名前を「Walls」
+
+その中に4つの子オブジェクトを作成（SquareでOK）
+
+LeftWall
+
+RightWall
+
+TopWall
+
+BottomWall（地面があるなら省略可）
+
+各オブジェクトに BoxCollider2D をつける
+
+Sprite Rendererは消すか透明にする（見えない壁にする）
+
+2. バウンドさせる設定
+
+Projectビュー → Create → Physics Material 2D
+
+名前を「Bouncy」
+
+Bounciness = 1
+
+Friction = 0
+
+Walls の各 BoxCollider2D にこの「Bouncy」を設定
+
+3. スライムのRigidbody2D設定
+
+Collision Detection = Continuous
+
+Constraints → Freeze Rotation Z = ON（回転防止）

@@ -1,0 +1,20 @@
+攻撃準備のスクリプト（SwordAttack）
+
+using UnityEngine;
+
+public class SwordAttack : MonoBehaviour
+{
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        // 敵を作ったら "Enemy" タグで判定する予定
+        Debug.Log("Sword hit: " + collision.name);
+    }
+}
+
+追加
+
+if (collision.CompareTag("Enemy"))
+{
+    Debug.Log("Enemy defeated!");
+    Destroy(collision.gameObject);
+}
