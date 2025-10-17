@@ -1,16 +1,17 @@
 //スコア管理のコード
 
 using UnityEngine;
+using TMPro; // ← 追加（TextMeshProを使うため）
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
     private int score = 0;
+    public TextMeshProUGUI scoreText; // ← スコア表示用UIを指定
 
     void Awake()
     {
-        // シングルトン（どこからでも呼べるようにする）
         if (Instance == null)
         {
             Instance = this;
@@ -21,11 +22,24 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        UpdateScoreUI(); // 起動時にスコア初期表示
+    }
+
     // スコア加算
     public void AddScore(int amount)
     {
         score += amount;
-        Debug.Log("Score: " + score); // デバッグで確認
+        UpdateScoreUI();
+    }
+
+    private void UpdateScoreUI()
+    {
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
     }
 
     // スコア取得
@@ -34,3 +48,4 @@ public class GameManager : MonoBehaviour
         return score;
     }
 }
+
