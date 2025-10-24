@@ -12,8 +12,8 @@ public class GameManager : MonoBehaviour
     private bool isGameOver = false;
 
     [Header("UI")]
+    public TextMeshProUGUI scoreText;
     public GameObject gameOverUI;
-    public TextMeshProUGUI scoreText; // 👈 スコアを表示するTMPテキストを追加！
 
     void Awake()
     {
@@ -21,6 +21,11 @@ public class GameManager : MonoBehaviour
             Instance = this;
         else
             Destroy(gameObject);
+    }
+
+    void Start()
+    {
+        UpdateScoreUI(); // ← 起動時に初期スコア表示
     }
 
     void Update()
@@ -35,40 +40,34 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // スコア加算
     public void AddScore(int amount)
     {
         score += amount;
+        UpdateScoreUI(); // ← スコアUI更新
         Debug.Log("Score: " + score);
-
-        // 👇 スコアUIを更新する
-        if (scoreText != null)
-            scoreText.text = "Score: " + score;
     }
 
-    // スコア取得
-    public int GetScore()
+    private void UpdateScoreUI()
     {
-        return score;
+        if (scoreText != null)
+        {
+            scoreText.text = "Score: " + score;
+        }
     }
 
-    // ゲームオーバー処理
     public void GameOver()
     {
         isGameOver = true;
         Debug.Log("GAME OVER");
-
         if (gameOverUI != null)
             gameOverUI.SetActive(true);
     }
 
-    // 現在のゲームを再スタート
     public void RestartGame()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    // タイトルに戻る
     public void ReturnToTitle()
     {
         SceneManager.LoadScene("TitleScene");
