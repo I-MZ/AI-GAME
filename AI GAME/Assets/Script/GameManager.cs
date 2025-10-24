@@ -1,51 +1,76 @@
-//ƒXƒRƒAŠÇ—‚ÌƒR[ƒh
+ï»¿//ã‚¹ã‚³ã‚¢ç®¡ç†ã¨ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã‹ã‚‰ã®ç§»å‹•ã®ã‚³ãƒ¼ãƒ‰
 
 using UnityEngine;
-using TMPro; // © ’Ç‰ÁiTextMeshPro‚ğg‚¤‚½‚ßj
+using TMPro;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
     private int score = 0;
-    public TextMeshProUGUI scoreText; // © ƒXƒRƒA•\¦—pUI‚ğw’è
+    private bool isGameOver = false;
+
+    [Header("UI")]
+    public GameObject gameOverUI;
+    public TextMeshProUGUI scoreText; // ğŸ‘ˆ ã‚¹ã‚³ã‚¢ã‚’è¡¨ç¤ºã™ã‚‹TMPãƒ†ã‚­ã‚¹ãƒˆã‚’è¿½åŠ ï¼
 
     void Awake()
     {
         if (Instance == null)
-        {
             Instance = this;
-        }
         else
-        {
             Destroy(gameObject);
+    }
+
+    void Update()
+    {
+        if (isGameOver)
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+                RestartGame();
+
+            if (Input.GetKeyDown(KeyCode.T))
+                ReturnToTitle();
         }
     }
 
-    void Start()
-    {
-        UpdateScoreUI(); // ‹N“®‚ÉƒXƒRƒA‰Šú•\¦
-    }
-
-    // ƒXƒRƒA‰ÁZ
+    // ã‚¹ã‚³ã‚¢åŠ ç®—
     public void AddScore(int amount)
     {
         score += amount;
-        UpdateScoreUI();
-    }
+        Debug.Log("Score: " + score);
 
-    private void UpdateScoreUI()
-    {
+        // ğŸ‘‡ ã‚¹ã‚³ã‚¢UIã‚’æ›´æ–°ã™ã‚‹
         if (scoreText != null)
-        {
             scoreText.text = "Score: " + score;
-        }
     }
 
-    // ƒXƒRƒAæ“¾
+    // ã‚¹ã‚³ã‚¢å–å¾—
     public int GetScore()
     {
         return score;
     }
-}
 
+    // ã‚²ãƒ¼ãƒ ã‚ªãƒ¼ãƒãƒ¼å‡¦ç†
+    public void GameOver()
+    {
+        isGameOver = true;
+        Debug.Log("GAME OVER");
+
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+    }
+
+    // ç¾åœ¨ã®ã‚²ãƒ¼ãƒ ã‚’å†ã‚¹ã‚¿ãƒ¼ãƒˆ
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    // ã‚¿ã‚¤ãƒˆãƒ«ã«æˆ»ã‚‹
+    public void ReturnToTitle()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+}
