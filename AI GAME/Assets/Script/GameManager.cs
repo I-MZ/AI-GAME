@@ -1,6 +1,104 @@
 ﻿//スコア管理とゲームシーンからの移動のコード
 
 using UnityEngine;
+using TMPro;
+using UnityEngine.SceneManagement;
+
+public class GameManager : MonoBehaviour
+{
+    public static GameManager Instance;
+
+    private int score = 0;
+    private bool isGameOver = false;
+
+    [Header("UI（ゲームオーバー時に表示）")]
+    public GameObject gameOverUI;
+
+    [Header("制限時間（秒）")]
+    public float timeLimit = 180f; // 180秒でリザルトへ
+    private float timer = 0f;
+
+    void Awake()
+    {
+        // シングルトン設定
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); // ← これを追加！（シーンをまたいでも残る）
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    void Update()
+    {
+        if (isGameOver) return;
+
+        // 経過時間
+        timer += Time.deltaTime;
+
+        if (timer >= timeLimit)
+        {
+            GoToResult();
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+            ReturnToTitle();
+
+        // Rキーでリスタート
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            RestartGame();
+        }
+
+        // Tキーでタイトルへ
+        if (Input.GetKeyDown(KeyCode.T))
+        {
+            ReturnToTitle();
+        }
+    }
+
+    // スコア加算
+    public void AddScore(int amount)
+    {
+        score += amount;
+        Debug.Log("Score: " + score);
+    }
+
+    public int GetScore()
+    {
+        return score;
+    }
+
+    public void GameOver()
+    {
+        isGameOver = true;
+        Debug.Log("GAME OVER");
+        if (gameOverUI != null)
+            gameOverUI.SetActive(true);
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void ReturnToTitle()
+    {
+        SceneManager.LoadScene("TitleScene");
+    }
+
+    public void GoToResult()
+    {
+        Debug.Log("制限時間終了！リザルトへ移動します");
+        SceneManager.LoadScene("ResultScene");
+    }
+}
+
+/*
+using UnityEngine;
 using TMPro; // スコアやUI表示に使用
 using UnityEngine.SceneManagement;
 
@@ -101,3 +199,4 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene("TitleScene");
     }
 }
+*/
